@@ -1,8 +1,8 @@
 # algoritmoConcurrenteTP2
 
-# Implementación de Algoritmos con Hilos y Procesos
+###  Implementación de Algoritmos con Hilos y Procesos
 
-## Descripción
+### Descripción
 
 Este proyecto contiene dos implementaciones en C y C++: una utilizando hilos (threads) y otra utilizando procesos. Los algoritmos reciben como argumentos dos números enteros, `N` y `M`. Tales números serán utilizados para crear `N` hilos/procesos de tipo 1 y `M` hilos/procesos de tipo 2.
 
