@@ -22,88 +22,16 @@ Cuando los hilos finalicen su ejecución, el padre debe mostrar por pantalla “
 
 ## Instrucciones de Compilación y Ejecución
 
-### Hilos en C
-
-#### Código
-
-Guarda el siguiente código en un archivo llamado `hilos.c`:
+### Compilación
+Compila el código con el siguiente comando:
 
 ```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <time.h>
+g++ -o procesos puntob.cpp
+```
 
-#define MAX_SLEEP_TIME 2
+### Ejecución
+Ejecuta el programa con los argumentos N y M:
 
-int Compartida = 0;
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-
-void *hilo_tipo_1(void *arg) {
-    int x = *((int *)arg);
-    printf("Instancia %d del hilo 1\n", x);
-    usleep((rand() % (MAX_SLEEP_TIME + 1)) * 1000000); // Suspender entre 0 y 2 segundos
-    pthread_mutex_lock(&mutex);
-    Compartida++;
-    pthread_mutex_unlock(&mutex);
-    return NULL;
-}
-
-void *hilo_tipo_2(void *arg) {
-    int y = *((int *)arg);
-    printf("Instancia %d del hilo 2\n", y);
-    usleep((rand() % (MAX_SLEEP_TIME + 1)) * 1000000); // Suspender entre 0 y 2 segundos
-    pthread_mutex_lock(&mutex);
-    printf("Valor de Compartida: %d\n", Compartida);
-    pthread_mutex_unlock(&mutex);
-    return NULL;
-}
-
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Uso: %s <N> <M>\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    int N = atoi(argv[1]);
-    int M = atoi(argv[2]);
-    pthread_t hilos1[N], hilos2[M];
-    int indices1[N], indices2[M];
-
-    srand(time(NULL)); // Inicializar el generador de números aleatorios
-
-    for (int i = 0; i < N; i++) {
-        indices1[i] = i;
-        if (pthread_create(&hilos1[i], NULL, hilo_tipo_1, &indices1[i]) != 0) {
-            perror("Error creando hilo tipo 1");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    for (int i = 0; i < M; i++) {
-        indices2[i] = i;
-        if (pthread_create(&hilos2[i], NULL, hilo_tipo_2, &indices2[i]) != 0) {
-            perror("Error creando hilo tipo 2");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    for (int i = 0; i < N; i++) {
-        if (pthread_join(hilos1[i], NULL) != 0) {
-            perror("Error esperando hilo tipo 1");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    for (int i = 0; i < M; i++) {
-        if (pthread_join(hilos2[i], NULL) != 0) {
-            perror("Error esperando hilo tipo 2");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    printf("Se ha finalizado la ejecución\n");
-    return 0;
-}
+```c
+./procesos 5 5
 ```
